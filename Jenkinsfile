@@ -8,7 +8,12 @@ pipeline {
     stage('CompileandRunSonarAnalysis') {
       steps {
         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
-          bat("mvn -Dmaven.test.failure.ignore verify sonar:sonar -Dsonar.login=$SONAR_TOKEN -Dsonar.projectKey=easybuggy -Dsonar.host.url=http://localhost:9000/")
+          sh '''
+    export SONAR_TOKEN="${SONAR_TOKEN}"
+    /Users/craigjohnson/Downloads/Udemy Stuff/devsecops/apache-maven-3.8.7/bin/mvn \
+    -Dmaven.test.failure.ignore verify sonar:sonar \
+    -Dsonar.login="${SONAR_TOKEN}"
+'''
         }
       }
     }
@@ -26,7 +31,7 @@ pipeline {
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
           script {
             try {
-              bat("C:\\snyk\\snyk-win.exe  container test asecurityguru/testeb")
+              sh "/opt/homebrew/bin/snyk container test asecurityguru/testeb"
             } catch (err) {
               echo err.getMessage()
             }
@@ -37,19 +42,19 @@ pipeline {
     stage('RunSnykSCA') {
       steps {
         withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-          bat("mvn snyk:test -fn")
+          sh "/Users/craigjohnson/Downloads/Udemy Stuff/devsecops/apache-maven-3.8.7/bin/mvn snyk:test -fn"
         }
       }
     }
     stage('RunDASTUsingZAP') {
       steps {
-        bat("C:\\zap\\ZAP_2.12.0_Crossplatform\\ZAP_2.12.0\\zap.sh -port 9393 -cmd -quickurl https://www.example.com -quickprogress -quickout C:\\zap\\ZAP_2.12.0_Crossplatform\\ZAP_2.12.0\\Output.html")
+        sh "/Applications/ZAP.app/Contents/Java/zap.sh -port 9393 -cmd -quickurl https://www.example.com -quickprogress -quickout /Users/craigjohnson/Documents/Output.html"
       }
     }
 
     stage('checkov') {
       steps {
-        bat("checkov -s -f main.tf")
+        sh "/Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/checkov -s -f main.tf"
       }
     }
 
