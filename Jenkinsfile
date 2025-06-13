@@ -10,7 +10,7 @@ pipeline {
         withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]) {
           sh '''
     export SONAR_TOKEN="${SONAR_TOKEN}"
-    /Users/craigjohnson/Downloads/Udemy Stuff/devsecops/apache-maven-3.8.7/bin/mvn \
+    '/Users/craigjohnson/Downloads/Udemy Stuff/devsecops/apache-maven-3.8.7/bin/'mvn \
     -Dmaven.test.failure.ignore verify sonar:sonar \
     -Dsonar.login="${SONAR_TOKEN}"
 '''
