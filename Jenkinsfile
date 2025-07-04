@@ -12,7 +12,7 @@ pipeline {
     export SONAR_TOKEN="${SONAR_TOKEN}"
     '/Users/craigjohnson/Downloads/Udemy Stuff/devsecops/apache-maven-3.8.7/bin/'mvn \
     -Dmaven.test.failure.ignore verify sonar:sonar \
-    -Dsonar.login="${SONAR_TOKEN}" -Dsonar.projectKey=easybuggy -Dsonar.host.url=http://localhost:9000/"
+    -Dsonar.login="${SONAR_TOKEN}" -Dsonar.projectKey=easybuggy -Dsonar.host.url=http://localhost:9000/
 '''
         }
       }
